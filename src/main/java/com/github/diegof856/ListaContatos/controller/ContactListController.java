@@ -4,6 +4,7 @@ import com.github.diegof856.ListaContatos.commands.CreateContactCommand;
 import com.github.diegof856.ListaContatos.commands.UpdateContactCommand;
 import com.github.diegof856.ListaContatos.commands.dto.ContactResponseDTO;
 import com.github.diegof856.ListaContatos.commands.DeleteContactCommand;
+
 import com.github.diegof856.ListaContatos.mediator.Mediator;
 import com.github.diegof856.ListaContatos.queries.GetAllContactQuery;
 import com.github.diegof856.ListaContatos.queries.GetContactByIdQuery;
@@ -35,7 +36,7 @@ public class ContactListController implements GenericController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody @Valid UpdateContactCommand command){
-        this.mediator.send(new UpdateContactCommand(UUID.fromString(id),command.nome(),command.telefone(),command.email(),command.dataNascimento(),command.enderecos()));
+        this.mediator.send(UpdateContactCommand.createUpdateContact(id,command));
         return ResponseEntity.noContent().build();
     }
     @DeleteMapping("/{id}")
