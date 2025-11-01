@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ListaContatos
+  data:
+    mongodb:
+      uri: mongodb://localhost:27028/ListaContatos
