@@ -21,9 +21,4 @@ public record UpdateContactCommand(
         @NotNull(message = "campo obrigatorio")
         LocalDate dataNascimento,
         List<AddressDTO> enderecos) implements Command<Void> {
-
-    public static UpdateContactCommand createUpdateContact(String id, UpdateContactCommand command){
-
-        return new UpdateContactCommand(UUID.fromString(id), command.nome, command.telefone, command.email, command.dataNascimento, command.enderecos);
-    }
 }
