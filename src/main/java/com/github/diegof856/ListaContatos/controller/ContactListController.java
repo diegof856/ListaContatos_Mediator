@@ -7,6 +7,7 @@ import com.github.diegof856.ListaContatos.commands.DeleteContactCommand;
 import com.github.diegof856.ListaContatos.mediator.Mediator;
 import com.github.diegof856.ListaContatos.queries.GetAllContactQuery;
 import com.github.diegof856.ListaContatos.queries.GetContactByIdQuery;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ContactListController implements GenericController {
     private final Mediator mediator;
 
     @PostMapping
-    public ResponseEntity<Void> saveContact(@RequestBody CreateContactCommand command){
+    public ResponseEntity<Void> saveContact(@RequestBody @Valid CreateContactCommand command){
         URI location = generateHeaderLocation(this.mediator.send(command).getId());
         return ResponseEntity.created(location).build();
     }
@@ -33,7 +34,7 @@ public class ContactListController implements GenericController {
         return ResponseEntity.ok(contacts);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody UpdateContactCommand command){
+    public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody @Valid UpdateContactCommand command){
         this.mediator.send(new UpdateContactCommand(UUID.fromString(id),command.nome(),command.telefone(),command.email(),command.dataNascimento(),command.enderecos()));
         return ResponseEntity.noContent().build();
     }
