@@ -10,7 +10,8 @@ WORKDIR /app
 COPY --from=build ./build/target/*.jar ./app.jar
 
 EXPOSE 8080
+ENV DATASOURCE_URL=""
 ENV PASS=""
-ENV TZ =America/Sao_Paulo
+ENV TZ="America/Sao_Paulo"
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

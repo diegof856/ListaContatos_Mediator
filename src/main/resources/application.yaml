@@ -3,7 +3,7 @@ spring:
     name: ListaContatos
   data:
     mongodb:
-      uri: mongodb://localhost:27028/ListaContatos
+      uri: ${DATASOURCE_URL:mongodb://localhost:27028/ListaContatos}
 app:
   config:
     passVar:  ${PASS}

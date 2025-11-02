@@ -5,7 +5,7 @@ import com.github.diegof856.ListaContatos.commands.UpdateContactCommand;
 import com.github.diegof856.ListaContatos.commands.dto.ContactResponseDTO;
 
 
-import com.github.diegof856.ListaContatos.controller.factory.FactoryInstance;
+import com.github.diegof856.ListaContatos.factory.FactoryInstanceController;
 
 import com.github.diegof856.ListaContatos.mediator.Mediator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,7 @@ import java.util.List;
 public class ContactListController implements GenericController {
 
     private final Mediator mediator;
-    private final FactoryInstance factoryInstance;
+    private final FactoryInstanceController factoryInstanceController;
     @PostMapping
     @Operation(summary = "Salvar", description = "Cadastrar novo contato")
     @ApiResponses({
@@ -44,7 +44,7 @@ public class ContactListController implements GenericController {
     @Operation(summary = "Listar Contatos", description = "Listar contatos.")
     @ApiResponse(responseCode = "200", description = "Retorna a lista de todos os contatos.")
     public ResponseEntity<List<ContactResponseDTO>> getAllContact(){
-        List<ContactResponseDTO> contacts = this.mediator.send(this.factoryInstance.createGetAllQuery());
+        List<ContactResponseDTO> contacts = this.mediator.send(this.factoryInstanceController.createGetAllQuery());
         return ResponseEntity.ok(contacts);
     }
     @PutMapping("/{id}")
@@ -54,7 +54,7 @@ public class ContactListController implements GenericController {
             @ApiResponse(responseCode = "422", description = "Erro de validação.")
     })
     public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody @Valid UpdateContactCommand command){
-        this.mediator.send(this.factoryInstance.createUpdateCommand(id,command));
+        this.mediator.send(this.factoryInstanceController.createUpdateCommand(id,command));
         return ResponseEntity.noContent().build();
     }
     @DeleteMapping("/{id}")
@@ -64,7 +64,7 @@ public class ContactListController implements GenericController {
             @ApiResponse(responseCode = "404", description = "Contato não encontrado.")
     })
     public ResponseEntity<Void> delete(@PathVariable("id")String id){
-        this.mediator.send(this.factoryInstance.createDeleteCommnad(id));
+        this.mediator.send(this.factoryInstanceController.createDeleteCommnad(id));
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/{id}")
@@ -74,6 +74,6 @@ public class ContactListController implements GenericController {
             @ApiResponse(responseCode = "404", description = "Contato não encontrado.")
     })
     public ResponseEntity<ContactResponseDTO> getDetails(@PathVariable("id")String id){
-        return ResponseEntity.ok(this.mediator.send(this.factoryInstance.createGetContactById(id)));
+        return ResponseEntity.ok(this.mediator.send(this.factoryInstanceController.createGetContactById(id)));
     }
 }

@@ -1,4 +1,4 @@
-package com.github.diegof856.ListaContatos.mappers.implFactory;
+package com.github.diegof856.ListaContatos.factory.implFactory;
 
 import com.github.diegof856.ListaContatos.commands.CreateContactCommand;
 import com.github.diegof856.ListaContatos.commands.UpdateContactCommand;
@@ -6,7 +6,7 @@ import com.github.diegof856.ListaContatos.commands.dto.AddressDTO;
 import com.github.diegof856.ListaContatos.commands.dto.ContactResponseDTO;
 import com.github.diegof856.ListaContatos.entity.Address;
 import com.github.diegof856.ListaContatos.entity.Contact;
-import com.github.diegof856.ListaContatos.mappers.Factory;
+import com.github.diegof856.ListaContatos.factory.Factory;
 import org.springframework.stereotype.Component;
 
 
