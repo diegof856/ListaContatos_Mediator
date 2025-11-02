@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
@@ -16,15 +17,18 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundExceptions.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     private ResponseEntity<Object> notFoundHandler(NotFoundExceptions exceptions){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody(exceptions.getMessage(),HttpStatus.NOT_FOUND));
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     private ResponseEntity<List<Map<String,Object>>> validationFieldsHandler(MethodArgumentNotValidException exceptions){
         List<Map<String, Object>> fieldErrors = exceptions.getFieldErrors().stream().map(this::errorsList).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(fieldErrors);
     }
     @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> genericErrors(RuntimeException e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody("Ocorreu um erro inesperada. Entre em contato com a administração",HttpStatus.INTERNAL_SERVER_ERROR));
     }

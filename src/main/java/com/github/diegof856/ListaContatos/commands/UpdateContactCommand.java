@@ -3,13 +3,14 @@ package com.github.diegof856.ListaContatos.commands;
 import com.github.diegof856.ListaContatos.commands.dto.AddressDTO;
 import com.github.diegof856.ListaContatos.entity.Contact;
 import com.github.diegof856.ListaContatos.mediator.Command;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
+@Schema(name = "Atualizar_contato")
 public record UpdateContactCommand(
         UUID id,
         @NotBlank(message = "campo obrigatorio")

@@ -4,3 +4,9 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27028/ListaContatos
+app:
+  config:
+    passVar:  ${PASS}
+
+springdoc:
+  override-with-generic-response: false
