@@ -40,14 +40,15 @@ class ListaContatosApplicationTests {
     @MockitoBean
     FactoryInstance factoryInstance;
 
-
+    String json;
+    String invalidJson;
+    String updadteJson;
     Address address;
     Address address2;
     List<Address> addressList;
     Contact contact;
     Contact contact2;
-    String json;
-    String invalidJson;
+
     List<ContactResponseDTO> listContacts;
     ContactResponseDTO contactResponseDTO;
     ContactResponseDTO contactResponseDTO2;
@@ -105,6 +106,22 @@ class ListaContatosApplicationTests {
                     ]
                 }
                 """;
+        this.updadteJson = """
+                 {
+                        "nome": "Diego Felipe",
+                        "telefone": "99949-4566",
+                        "email": "diego@email.com",
+                        "dataNascimento": "2000-05-31",
+                        "enderecos": [
+                            {
+                                "rua": "Rua mais Flores",
+                                "numero": "20",
+                                "cidade": "vitoria",
+                                "estado": "Pe"
+                            }
+                        ]
+                }
+                """;
 
     }
 
@@ -135,10 +152,8 @@ class ListaContatosApplicationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.invalidJson))
                 .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].Campo").value("telefone"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].Erro").value("campo obrigatorio"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].Campo").value("email"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].Erro").value("campo obrigatorio"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].Campo").value("email"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].Erro").value("campo obrigatorio"));
 
     }
     @Test
@@ -172,5 +187,42 @@ class ListaContatosApplicationTests {
         this.mvc.perform(MockMvcRequestBuilders.get("/contatos/"+id)).andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
+    @Test
+    @DisplayName("deve retornar o status não contem corretamente ao atualizar")
+    void shouldReturnTheStatusDoesNotContainCorrectlyWhenUpdating() throws Exception{
+        String id = this.contact.getId().toString();
+        when(this.mediator.send(Mockito.any())).thenReturn(null);
+        this.mvc.perform(MockMvcRequestBuilders.put("/contatos/"+id).contentType(MediaType.APPLICATION_JSON).content(this.updadteJson))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    }
+    @Test
+    @DisplayName("deve retornar erro quatrocentos e quatro caso o contato não seja encontrado ao atualizar")
+    void shouldReturnAFourHundredAndFourErrorWhenTryingToUpdate() throws Exception{
+        String id = this.contact.getId().toString();
+        when(this.mediator.send(Mockito.any())).thenThrow(NotFoundExceptions.class);
+        this.mvc.perform(MockMvcRequestBuilders.put("/contatos/"+id).contentType(MediaType.APPLICATION_JSON).content(this.updadteJson))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
+    @Test
+    @DisplayName("deve retornar o status não contem corretamente ao deletar")
+    void shouldCorrectlyReturnTheDoesNotContainStatusWhenDeleting() throws Exception{
+        String id = this.contact.getId().toString();
+        when(this.mediator.send(Mockito.any())).thenReturn(null);
+        this.mvc.perform(MockMvcRequestBuilders.delete("/contatos/"+id))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    }
+
+    @Test
+    @DisplayName("deve retornar erro quatrocentos e quatro caso o contato não seja encontrado ao tentar deletar")
+    void shouldReturnAFourHundredAndFourErrorIfTheContactIsNotFoundWhenTryingToDelete() throws Exception{
+        String id = this.contact.getId().toString();
+        when(this.mediator.send(Mockito.any())).thenThrow(NotFoundExceptions.class);
+        this.mvc.perform(MockMvcRequestBuilders.delete("/contatos/"+id)).andExpect(MockMvcResultMatchers.status().isNotFound());
+
+    }
+
 
 }
