@@ -27,4 +27,5 @@ public class Contact {
         this.name = name;
         this.id = id;
     }
+    public Contact(){};
 }

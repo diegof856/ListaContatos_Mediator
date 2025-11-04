@@ -1,6 +1,7 @@
 package com.github.diegof856.ListaContatos.controller.common;
 
-import com.github.diegof856.ListaContatos.exceptions.NotFoundExceptions;
+import com.github.diegof856.ListaContatos.commands.dto.ErrorDetail;
+import com.github.diegof856.ListaContatos.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,11 +28,18 @@ public class GlobalExceptionHandler {
         List<Map<String, Object>> fieldErrors = exceptions.getFieldErrors().stream().map(this::errorsList).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(fieldErrors);
     }
+    @ExceptionHandler(ValidateFieldsCustomizerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> invalidNumber(ValidateFieldsCustomizerException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getErrors());
+    }
+
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> genericErrors(RuntimeException e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody("Ocorreu um erro inesperada. Entre em contato com a administração",HttpStatus.INTERNAL_SERVER_ERROR));
     }
+
     private Map<String,Object> errorBody(Object message ,Object httpStatus){
         Map<String, Object> body = new HashMap<>();
         body.put("Erro",message);

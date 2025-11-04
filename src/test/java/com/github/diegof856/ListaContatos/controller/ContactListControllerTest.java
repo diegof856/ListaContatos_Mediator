@@ -2,7 +2,7 @@ package com.github.diegof856.ListaContatos.controller;
 
 import com.github.diegof856.ListaContatos.commands.dto.AddressDTO;
 import com.github.diegof856.ListaContatos.commands.dto.ContactResponseDTO;
-import com.github.diegof856.ListaContatos.controller.factory.FactoryInstance;
+import com.github.diegof856.ListaContatos.factory.FactoryInstanceController;
 import com.github.diegof856.ListaContatos.entity.Address;
 import com.github.diegof856.ListaContatos.entity.Contact;
 import com.github.diegof856.ListaContatos.exceptions.NotFoundExceptions;
@@ -35,7 +35,7 @@ class ContactListControllerTest {
     @MockitoBean
     Mediator mediator;
     @MockitoBean
-    FactoryInstance factoryInstance;
+    FactoryInstanceController factoryInstance;
 
     String json;
     String invalidJson;

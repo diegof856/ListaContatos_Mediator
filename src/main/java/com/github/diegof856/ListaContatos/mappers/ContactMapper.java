@@ -4,6 +4,7 @@ import com.github.diegof856.ListaContatos.commands.CreateContactCommand;
 import com.github.diegof856.ListaContatos.commands.UpdateContactCommand;
 import com.github.diegof856.ListaContatos.commands.dto.ContactResponseDTO;
 import com.github.diegof856.ListaContatos.entity.Contact;
+import com.github.diegof856.ListaContatos.factory.Factory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
